@@ -10,7 +10,7 @@ export default function Authenticated({
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
     const user = usePage().props.auth.user;
-    console.log(user);
+
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -33,6 +33,14 @@ export default function Authenticated({
                                     active={route().current('dashboard')}
                                 >
                                     Dashboard
+                                </NavLink>
+                            </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink
+                                    href={route('features.index')}
+                                    active={route().current('features.index')}
+                                >
+                                    Feature
                                 </NavLink>
                             </div>
                         </div>
@@ -138,6 +146,12 @@ export default function Authenticated({
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('features.index')}
+                            active={route().current('features.index')}
+                        >
+                            Features
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
@@ -173,8 +187,11 @@ export default function Authenticated({
                     </div>
                 </header>
             )}
-
-            <main>{children}</main>
+            <div className="py-12">
+                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <main>{children}</main>
+                </div>
+            </div>
         </div>
     );
 }
