@@ -49,5 +49,6 @@ class DatabaseSeeder extends Seeder
         ])->assignRole(RolesEnum::Admin);
 
         Feature::factory(100)->create();
+        $this->call([UpvotesTableSeeder::class]);
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class FeatureResource extends JsonResource
 {
+    public static $wrap = false;
     /**
      * Transform the resource into an array.
      *
@@ -22,8 +23,9 @@ class FeatureResource extends JsonResource
             'comments'=> $this->comments->count(),
             'created_at'=> $this->created_at->diffForHumans(),
             'user'=> new UserResource($this->user),
-            
-
+            'upvote_count'=>$this->upvote_count ?: 0,
+            'user_has_upvoted'=>(bool) $this->user_has_upvoted,
+            'user_has_downvoted'=> (bool)$this->user_has_downvoted
         ];
     }
 }
