@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UpVoteController;
@@ -32,6 +33,11 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['verified'])->group(function(){
         Route::post('feature/{feature}/upvote',[UpVoteController::class,'store'])->name('upvote.store');
         Route::delete('/upvote{feature}',[UpVoteController::class,'destroy'])->name('upvote.destroy');
+    });
+
+    Route::middleware(['verified'])->group(function(){
+        Route::post('feature/{feature}/comments',[CommentController::class,'store'])->name('comment.store');
+        Route::delete('/comment{comment}',[CommentController::class,'destroy'])->name('comments.destroy');
     });
 
 });
