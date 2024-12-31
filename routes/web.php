@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\PermissionsEnum;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\ProfileController;
@@ -9,7 +10,6 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::redirect('/', '/dashboard');
-
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -22,8 +22,11 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(['verified'])->group(function () {
         Route::get('/features', [FeatureController::class, 'index'])->name('features.index');
-        Route::get('/features/create', [FeatureController::class, 'create'])->name('features.create');
         Route::get('/features/{feature}', [FeatureController::class, 'show'])->name('features.show');
+    });
+
+    Route::middleware(['verified', 'can:'.PermissionsEnum::ManageFeatures->value])->group(function () {
+        Route::get('/features/create', [FeatureController::class, 'create'])->name('features.create');
         Route::get('/features/{feature}/edit', [FeatureController::class, 'edit'])->name('features.edit');
         Route::post('/features', [FeatureController::class, 'store'])->name('features.store');
         Route::put('/features/{feature}', [FeatureController::class, 'update'])->name('features.update');
@@ -35,11 +38,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/upvote{feature}',[UpVoteController::class,'destroy'])->name('upvote.destroy');
     });
 
-    Route::middleware(['verified'])->group(function(){
+    Route::middleware(['verified','can:'.PermissionsEnum::ManageComments->value])->group(function(){
         Route::post('feature/{feature}/comments',[CommentController::class,'store'])->name('comment.store');
         Route::delete('/comment{comment}',[CommentController::class,'destroy'])->name('comments.destroy');
     });
-
 });
 
 require __DIR__.'/auth.php';

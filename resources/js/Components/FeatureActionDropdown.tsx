@@ -1,10 +1,17 @@
 import { Feature } from "@/types";
 import Dropdown from "./Dropdown";
+import { usePage } from "@inertiajs/react";
+import { can } from "@/helpers";
 
 export default function FeatureActionDropdown({feature}:{feature:Feature}){
+    const user = usePage().props.auth.user;
+    if(!can(user,'manage_features')){
+        return
+    }
+
     return(
            <Dropdown>
-                                            <Dropdown.Trigger>
+                <Dropdown.Trigger>
                                                 <span className="inline-flex rounded-md">
                                                     <button
                                                         type="button"

@@ -1,9 +1,19 @@
 import { Feature } from "@/types";
 import TextAreaInput from "./TextAreaInput";
-import { useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import PrimaryButton from "./PrimaryButton";
+import { can } from "@/helpers";
 
 export default function NewCommentForm({ feature }: { feature:Feature}) {
+    const user = usePage().props.auth.user;
+    if(!can(user, 'manage_comment')){
+        return (
+            <div className="py-2 text-center text-gray-600">
+                <p className="text-center text-gray-400">You Do not have Permission to Manage Comment</p>
+            </div>
+        )
+    }
+
     const {data, setData,post, processing} = useForm({
         comment:''
     })

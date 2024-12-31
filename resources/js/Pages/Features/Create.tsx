@@ -62,6 +62,7 @@ export default function Create(){
 
                                     <TextAreaInput
                                         id="description"
+                                        rows={10}
                                         className="mt-1 block w-full"
                                         value={data.description}
                                         onChange={(e) => setData('description', e.target.value)}
